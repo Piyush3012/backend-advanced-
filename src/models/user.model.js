@@ -53,7 +53,7 @@ const userSchema=new Schema({
 //used for the encryption
 userSchema.pre("save",async function (next) {
    if(!this.isModified("password")) return next(); //only change the password if the password field is changed
-   this.password =bcrypt.hash(this.password,10)
+   this.password =await bcrypt.hash(this.password,10)
    next()
 }) //we can use the pre hook for storing the encrypted password and do not write the callback function as an arrow function
 
@@ -87,7 +87,7 @@ userSchema.methods.generateRefreshToken=function() {
     
         process.env.REFRESH_TOKEN_SECRET,
         {
-            espiresIn:process.env.REFRESH_TOKEN_EXPIRY
+            expiresIn:process.env.REFRESH_TOKEN_EXPIRY
         }
     
 )
